@@ -1,0 +1,48 @@
+class ListNode:
+    def __init__(self, key=-1, val=-1, next=None):
+        self.key=key
+        self.val=val
+        self.next=next
+
+class MyHashMap:
+
+    def __init__(self):
+        # use index as Key, and values will be stored in linkedlist
+        self.arr=[ListNode() for i in range(1000)]
+
+    def hash(self, key):
+        return key%len(self.arr)        
+
+    def put(self, key: int, value: int) -> None:
+        node=ListNode(key, value)
+        curr = self.arr[self.hash(key)]   #returns the dummy node
+        # traverse linked list to get the last node
+        while curr.next:
+            if curr.next.key==key:
+                curr.next.val=value
+                return
+            curr=curr.next
+        curr.next=node
+        # print("put: ", self.arr)
+
+    def get(self, key: int) -> int:
+        curr=self.arr[self.hash(key)]     #returns dummy node
+        while curr:
+            if curr.key==key:
+                return curr.val
+            curr=curr.next
+        return -1
+
+    def remove(self, key: int) -> None:
+        curr=self.arr[self.hash(key)]     #returns dummy node
+        while curr.next:
+            if curr.next.key == key:
+                curr.next = curr.next.next
+                return
+            curr = curr.next
+
+# Your MyHashMap object will be instantiated and called as such:
+# obj = MyHashMap()
+# obj.put(key,value)
+# param_2 = obj.get(key)
+# obj.remove(key)
